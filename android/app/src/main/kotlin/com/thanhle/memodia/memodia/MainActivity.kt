@@ -1,4 +1,4 @@
-package com.thanhle.memodia.memodia
+package com.thanhle.memodia
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -55,13 +55,10 @@ class AuthController extends GetxController {
     }
 
     Get.snackbar("Signing In", "Loading",
-        showProgressIndicator: true,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(minutes: 2));
+        showProgressIndicator: true, snackPosition: SnackPosition.BOTTOM, duration: Duration(minutes: 2));
     try {
       if (type == SignInType.EMAIL_PASSWORD) {
-        await _authService.signInWithEmailAndPassword(
-            emailController.text.trim(), passwordController.text.trim());
+        await _authService.signInWithEmailAndPassword(emailController.text.trim(), passwordController.text.trim());
         emailController.clear();
         passwordController.clear();
       }
@@ -91,13 +88,15 @@ class AuthController extends GetxController {
       return;
     }
 
-    Get.snackbar("Signing Up", "Loading",
-        showProgressIndicator: true,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: Duration(minutes: 2));
+    Get.snackbar(
+      "Signing Up",
+      "Loading",
+      showProgressIndicator: true,
+      snackPosition: SnackPosition.BOTTOM,
+      duration: Duration(minutes: 2),
+    );
     try {
-      await _authService.signUp(
-          emailController.text.trim(), passwordController.text.trim());
+      await _authService.signUp(emailController.text.trim(), passwordController.text.trim());
       emailController.clear();
       passwordController.clear();
     } catch (e) {

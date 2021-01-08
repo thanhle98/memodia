@@ -4,7 +4,6 @@ import 'package:memodia/auth/auth.controller.dart';
 
 import 'package:memodia/todo/todo.controller.dart';
 import 'package:memodia/todo/widgets/todo_item.dart';
-import 'package:memodia/widgets/app_drawer.dart';
 
 class TodoList extends StatelessWidget {
   TodoList({Key key}) : super(key: key);
@@ -15,7 +14,6 @@ class TodoList extends StatelessWidget {
     TodoController c = Get.put<TodoController>(TodoController());
     return Scaffold(
       key: scaffoldKey,
-      drawer: AppDrawer(),
       appBar: AppBar(
         title: Obx(() => authController.user != null
             ? Text(" ${authController?.user?.value?.email}")

@@ -8,8 +8,9 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        color: Color(0xffFFE5C4),
         child: Center(
-          child: CircularProgressIndicator(),
+          child: Image(image: AssetImage("assets/images/memodia.png")),
         ),
       ),
     );
