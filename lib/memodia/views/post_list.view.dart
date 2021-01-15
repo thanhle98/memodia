@@ -11,7 +11,12 @@ class PostList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(),
-        title: Text("Album Detail"),
+        title: Obx(() {
+          if(memoController.isLoading.value == true) {
+            return Text("Saving some images...");
+          }
+          return Text("Album Detail");
+        }),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),

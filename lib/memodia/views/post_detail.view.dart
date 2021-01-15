@@ -13,6 +13,12 @@ class PostDetail extends StatelessWidget {
       appBar: AppBar(
         leading: BackButton(color: Colors.black),
         backgroundColor: Color(0xffFFE5C4),
+        title: Obx(() {
+          return Text(
+            "New Post:" + memodiaController.memoImages.length.toString(),
+            style: TextStyle(color: Colors.black),
+          );
+        }),
         actions: [
           IconButton(
             icon: Icon(Icons.add_a_photo),
@@ -40,8 +46,7 @@ class PostDetail extends StatelessWidget {
                 () => memodiaController.memoImages.length != 0
                     ? ReorderableItemsView(
                         onReorder: memodiaController.reOrderTitles,
-                        children:
-                            memodiaController.memoImages.map((mI) => ImageTile(Key(mI.hashcode), mI.filePath)).toList(),
+                        children: memodiaController.memoImages.map((mI) => ImageTile(Key(mI.hashcode), mI)).toList(),
                         crossAxisCount: 4,
                         isGrid: true,
                         crossAxisSpacing: 10.0,

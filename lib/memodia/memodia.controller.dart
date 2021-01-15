@@ -45,9 +45,8 @@ class MemodiaController extends GetxController {
     memoImages.insert(newIndex, memoImages.removeAt(oldIndex));
   }
 
-  void deleteImage(String deleteFilePath) {
-    memoImages.remove(memoImages.firstWhere((element) => element.filePath == deleteFilePath));
-    Get.back();
+  void deleteImage(MemoImage memoImage) {
+    memoImages.remove(memoImages.firstWhere((element) => element.hashcode == memoImage.hashcode));
   }
 
   void addImage() async {
