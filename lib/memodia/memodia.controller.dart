@@ -8,13 +8,17 @@ import 'package:memodia/memodia/models/memodia.model.dart';
 
 class MemodiaController extends GetxController {
   final picker = ImagePicker();
-  var descriptionController = TextEditingController();
+  MemodiaService _memodiaService;
 
-  var memoImages = <MemoImage>[].obs;
+  // all
   var memodias = <Memodia>[].obs;
+
+  // Detail
+  var id = "".obs;
+  var memoImages = <MemoImage>[].obs;
+  var descriptionController = TextEditingController();
   var isLoading = false.obs;
 
-  MemodiaService _memodiaService;
   MemodiaController() {
     _memodiaService = MemodiaService();
   }
@@ -39,8 +43,9 @@ class MemodiaController extends GetxController {
 
   void addImage() async {
     try {
-      var _image = await picker.getImage(source: ImageSource.gallery);
-      memoImages.add(MemoImage(hashcode: _image.hashCode.toString(), filePath: _image.path));
+      var _image = await picker.getImage(source: ImageSource.gallery, maxHeight: 200, imageQuality: 50);
+      var _memoImage = MemoImage(hashcode: _image.hashCode.toString(), filePath: _image.path);
+      memoImages.add(_memoImage);
     } catch (e) {
       Get.snackbar("Log", "You didn't choose any image");
     }
@@ -51,21 +56,37 @@ class MemodiaController extends GetxController {
   void resetContent() {
     memoImages.value = [];
     descriptionController.text = "";
+    id.value = "";
   }
 
   void setContent(Memodia content) {
+    id.value = content.id;
     memoImages.value = content.images;
     descriptionController.text = content.description;
   }
 
   void saveMemodia() async {
+    // create new one
     try {
       AuthController authController = AuthController.to;
       isLoading.value = true;
-      var memodia =
-          await _memodiaService.addOne(authController.user.value.uid, descriptionController.text, memoImages.value);
-      Get.back();
-      Get.snackbar("Success", memodia.id, snackPosition: SnackPosition.BOTTOM);
+      print(id.value);
+      if (id.value != "") {
+        await _memodiaService.updateOne(Memodia(
+          id: id.value,
+          description: descriptionController.text,
+          images: memoImages.value,
+        ));
+        Get.snackbar("Update Success", id.value, snackPosition: SnackPosition.BOTTOM);
+      } else {
+        for (var i = 0; i < memoImages.length; i++) {
+          if (memoImages[i].url == null) memoImages[i] = await _memodiaService.uploadFile(memoImages[i]);
+        }
+        var memodia =
+            await _memodiaService.addOne(authController.user.value.uid, descriptionController.text, memoImages.value);
+        Get.snackbar("Create Success", memodia.id, snackPosition: SnackPosition.BOTTOM);
+      }
+
       isLoading.value = false;
     } catch (e) {
       isLoading.value = false;

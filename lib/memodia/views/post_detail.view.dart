@@ -22,7 +22,10 @@ class PostDetail extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.save),
             color: Colors.black,
-            onPressed: memodiaController.saveMemodia,
+            onPressed: () {
+              Get.back();
+              memodiaController.saveMemodia();
+            },
           )
         ],
       ),

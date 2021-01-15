@@ -6,7 +6,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'memodia.model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Memodia {
   String id;
   String userId;
@@ -20,7 +20,7 @@ class Memodia {
 
   factory Memodia.fromSnapshot(DocumentSnapshot snap) {
     return Memodia(
-      id: snap.data["id"],
+      id: snap.documentID,
       userId: snap.data["userId"],
       description: snap.data["description"],
       images: snap.data["images"].map<MemoImage>((mI) {

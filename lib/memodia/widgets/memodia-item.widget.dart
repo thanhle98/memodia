@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,13 +23,15 @@ class MemodiaItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(children: [
-            Icon(Icons.ac_unit_outlined),
-            Text("Thanh Le", style: TextStyle(fontWeight: FontWeight.bold)),
+            Icon(Icons.image),
+            Text(memodia.id, style: TextStyle(fontWeight: FontWeight.bold)),
             Spacer(),
-            IconButton(icon: Icon(Icons.edit), onPressed: () {
-              detailController.setContent(memodia);
-              Get.toNamed("/post/detail");
-            })
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  detailController.setContent(memodia);
+                  Get.toNamed("/post/detail");
+                })
           ]),
           SizedBox(height: 10),
           CarouselSlider.builder(
@@ -43,11 +46,14 @@ class MemodiaItem extends StatelessWidget {
             itemCount: memodia.images.length,
             itemBuilder: (context, itemIndex) => ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
-              child: Image.file(
-                File(memodia.images[itemIndex].filePath),
+              child: CachedNetworkImage(
+                imageUrl: memodia.images[itemIndex].url,
                 width: Get.width * 0.9,
                 height: Get.width * 0.9,
                 fit: BoxFit.cover,
+                progressIndicatorBuilder: (context, url, downloadProgress) =>
+                    Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
           ),
@@ -75,3 +81,10 @@ class MemodiaItem extends StatelessWidget {
     );
   }
 }
+
+// Image.network(
+//                 memodia.images[itemIndex].url,
+//                 width: Get.width * 0.9,
+//                 height: Get.width * 0.9,
+//                 fit: BoxFit.cover,
+//               ),

@@ -7,11 +7,16 @@ part 'image.model.g.dart';
 class MemoImage {
   String hashcode;
   String filePath;
+  String url;
 
-  MemoImage({this.hashcode, this.filePath});
+  MemoImage({this.hashcode, this.filePath, this.url});
 
   factory MemoImage.fromSnapshot(DocumentSnapshot snap) {
-    return MemoImage(hashcode: snap.data["hashcode"], filePath: snap.data["filePath"]);
+    return MemoImage(
+      hashcode: snap.data["hashcode"],
+      filePath: snap.data["filePath"],
+      url: snap.data["url"],
+    );
   }
 
   factory MemoImage.fromJson(Map<String, dynamic> json) => _$MemoImageFromJson(json);
