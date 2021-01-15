@@ -11,7 +11,7 @@ class PostList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(),
-        title: Text("Family"),
+        title: Text("Album Detail"),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),

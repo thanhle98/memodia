@@ -27,11 +27,35 @@ class MemodiaItem extends StatelessWidget {
             Text(memodia.id, style: TextStyle(fontWeight: FontWeight.bold)),
             Spacer(),
             IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  detailController.setContent(memodia);
-                  Get.toNamed("/post/detail");
-                })
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                Get.dialog(AlertDialog(
+                  title: Text("Confirm delete?"),
+                  actions: [
+                    MaterialButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Get.back();
+                      },
+                    ),
+                    MaterialButton(
+                      child: Text("Confirm", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink)),
+                      onPressed: () {
+                        Get.back();
+                        detailController.deleteMemodia(memodia);
+                      },
+                    ),
+                  ],
+                ));
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                detailController.setContent(memodia);
+                Get.toNamed("/post/detail");
+              },
+            )
           ]),
           SizedBox(height: 10),
           CarouselSlider.builder(
@@ -81,10 +105,3 @@ class MemodiaItem extends StatelessWidget {
     );
   }
 }
-
-// Image.network(
-//                 memodia.images[itemIndex].url,
-//                 width: Get.width * 0.9,
-//                 height: Get.width * 0.9,
-//                 fit: BoxFit.cover,
-//               ),

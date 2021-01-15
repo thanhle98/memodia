@@ -50,7 +50,7 @@ class PostDetail extends StatelessWidget {
                             memodiaController.memoImages.map((e) => StaggeredTileExtended.count(2, 2)).toList(),
                         longPressToDrag: false,
                       )
-                    : Center(child: Text("No image yet")),
+                    : Center(child: Text("No image yet, add a new image")),
               ),
             ),
             SizedBox(height: 10.0),

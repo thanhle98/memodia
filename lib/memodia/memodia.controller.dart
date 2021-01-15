@@ -32,6 +32,15 @@ class MemodiaController extends GetxController {
     return _memodiaService.findAll(authController.user.value.uid);
   }
 
+  void deleteMemodia(Memodia memodia) {
+    _memodiaService.deleteOne(memodia);
+    Get.snackbar(
+      "Delete Success",
+      memodia.id,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
   void reOrderTitles(int oldIndex, int newIndex) {
     memoImages.insert(newIndex, memoImages.removeAt(oldIndex));
   }
@@ -47,7 +56,11 @@ class MemodiaController extends GetxController {
       var _memoImage = MemoImage(hashcode: _image.hashCode.toString(), filePath: _image.path);
       memoImages.add(_memoImage);
     } catch (e) {
-      Get.snackbar("Log", "You didn't choose any image");
+      Get.snackbar(
+        "Log",
+        "You didn't choose any image",
+        snackPosition: SnackPosition.BOTTOM,
+      );
     }
   }
 
@@ -70,18 +83,20 @@ class MemodiaController extends GetxController {
     try {
       AuthController authController = AuthController.to;
       isLoading.value = true;
-      print(id.value);
+
+      for (var i = 0; i < memoImages.length; i++) {
+        if (memoImages[i].url == null) memoImages[i] = await _memodiaService.uploadFile(memoImages[i]);
+      }
+
       if (id.value != "") {
         await _memodiaService.updateOne(Memodia(
           id: id.value,
           description: descriptionController.text,
           images: memoImages.value,
+          userId: authController.user.value.uid,
         ));
         Get.snackbar("Update Success", id.value, snackPosition: SnackPosition.BOTTOM);
       } else {
-        for (var i = 0; i < memoImages.length; i++) {
-          if (memoImages[i].url == null) memoImages[i] = await _memodiaService.uploadFile(memoImages[i]);
-        }
         var memodia =
             await _memodiaService.addOne(authController.user.value.uid, descriptionController.text, memoImages.value);
         Get.snackbar("Create Success", memodia.id, snackPosition: SnackPosition.BOTTOM);

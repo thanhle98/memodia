@@ -17,7 +17,12 @@ class GroupList extends StatelessWidget {
             ),
             SizedBox(height: 10.0),
             Text("Travel", style: TextStyle(fontWeight: FontWeight.bold)),
-            Image(image: AssetImage("assets/images/group_travel.png")),
+            InkWell(
+              child: Image(image: AssetImage("assets/images/group_travel.png")),
+              onTap: () {
+                Get.toNamed("/post/list");
+              },
+            ),
             SizedBox(height: 10.0),
             Text("Family", style: TextStyle(fontWeight: FontWeight.bold)),
             InkWell(
