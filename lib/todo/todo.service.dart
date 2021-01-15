@@ -5,13 +5,11 @@ import 'package:memodia/todo/models/todo.model.dart';
 
 class TodoService {
   CollectionReference todosRef = Firestore.instance.collection("todos");
-  Stream<Iterable<Todo>> findAll(userId) {
+  Stream<List<Todo>> findAll(userId) {
     return todosRef
         .where("user_id", isEqualTo: userId)
-        .getDocuments()
-        .then((value) {
-      return value.documents.map((e) => Todo.fromSnapshot(e)).toList();
-    }).asStream();
+        .snapshots()
+        .map((event) => event.documents.map((doc) => Todo.fromSnapshot(doc)));
   }
 
   Future<Todo> findOne(String id) async {
@@ -20,8 +18,7 @@ class TodoService {
   }
 
   Future<Todo> addOne(String userId, String title, {bool done = false}) async {
-    var result =
-        await todosRef.add({"user_id": userId, "title": title, "done": done});
+    var result = await todosRef.add({"user_id": userId, "title": title, "done": done});
     return Todo(id: result.documentID, title: title, done: done);
   }
 

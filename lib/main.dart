@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:memodia/auth/auth.controller.dart';
 import 'package:memodia/get_routes.dart';
+import 'package:memodia/memodia/memodia.controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

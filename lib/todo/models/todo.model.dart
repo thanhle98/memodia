@@ -5,7 +5,9 @@ class Todo {
   String title;
   bool done;
   String userId;
+  
   Todo({this.id, this.userId, this.title, this.done = false});
+
   copyWith({title, done}) {
     return Todo(
       id: id,
