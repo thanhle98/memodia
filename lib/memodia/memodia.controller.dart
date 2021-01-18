@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +19,8 @@ class MemodiaController extends GetxController {
   var id = "".obs;
   var memoImages = <MemoImage>[].obs;
   var descriptionController = TextEditingController();
-  var isLoading = false.obs;
+  var status = "".obs;
+  var intervalTimer = "".obs;
 
   MemodiaController() {
     _memodiaService = MemodiaService();
@@ -51,7 +54,7 @@ class MemodiaController extends GetxController {
 
   void addImage() async {
     try {
-      var _image = await picker.getImage(source: ImageSource.gallery, maxHeight: 200, imageQuality: 50);
+      var _image = await picker.getImage(source: ImageSource.gallery, imageQuality: 10);
       var _memoImage = MemoImage(hashcode: _image.hashCode.toString(), filePath: _image.path);
       memoImages.add(_memoImage);
     } catch (e) {
@@ -79,13 +82,20 @@ class MemodiaController extends GetxController {
 
   void saveMemodia() async {
     // create new one
+    var _timer = Timer.periodic(new Duration(seconds: 1), (timer) {
+      intervalTimer.value = format(Duration(seconds: timer.tick));
+    });
+
     try {
       AuthController authController = AuthController.to;
-      isLoading.value = true;
+      status.value = "Uploading some images...";
 
       for (var i = 0; i < memoImages.length; i++) {
+        status.value = "Uploading ${i + 1}/${memoImages.length}...";
         if (memoImages[i].url == null) memoImages[i] = await _memodiaService.uploadFile(memoImages[i]);
       }
+
+      status.value = "Refine your images...";
 
       if (id.value != "") {
         await _memodiaService.updateOne(Memodia(
@@ -94,17 +104,21 @@ class MemodiaController extends GetxController {
           images: memoImages.value,
           userId: authController.user.value.uid,
         ));
-        Get.snackbar("Update Success", id.value, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Updated ${memoImages.length} images in ${intervalTimer.value}s!", id.value, snackPosition: SnackPosition.BOTTOM);
       } else {
         var memodia =
             await _memodiaService.addOne(authController.user.value.uid, descriptionController.text, memoImages.value);
-        Get.snackbar("Create Success", memodia.id, snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar("Uploaded ${memoImages.length} images in ${intervalTimer.value}s!", memodia.id, snackPosition: SnackPosition.BOTTOM);
       }
 
-      isLoading.value = false;
+      status.value = "";
+      _timer.cancel();
     } catch (e) {
-      isLoading.value = false;
+      status.value = "Error...";
+      _timer.cancel();
       print(e);
     }
   }
 }
+
+format(Duration d) => d.toString().split('.').first.padLeft(8, "0");

@@ -15,7 +15,7 @@ class PostDetail extends StatelessWidget {
         backgroundColor: Color(0xffFFE5C4),
         title: Obx(() {
           return Text(
-            "New Post:" + memodiaController.memoImages.length.toString(),
+            "Post Detail: " + memodiaController.memoImages.length.toString(),
             style: TextStyle(color: Colors.black),
           );
         }),

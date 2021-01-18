@@ -33,16 +33,16 @@ class MemodiaItem extends StatelessWidget {
                   title: Text("Confirm delete?"),
                   actions: [
                     MaterialButton(
-                      child: Text("Cancel"),
-                      onPressed: () {
-                        Get.back();
-                      },
-                    ),
-                    MaterialButton(
                       child: Text("Confirm", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.pink)),
                       onPressed: () {
                         Get.back();
                         detailController.deleteMemodia(memodia);
+                      },
+                    ),
+                    MaterialButton(
+                      child: Text("Cancel"),
+                      onPressed: () {
+                        Get.back();
                       },
                     ),
                   ],

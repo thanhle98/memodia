@@ -38,8 +38,7 @@ class GroupList extends StatelessWidget {
             )
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(child: Icon(Icons.add), onPressed: () => Get.toNamed("/group/create")),
+      )
     );
   }
 }

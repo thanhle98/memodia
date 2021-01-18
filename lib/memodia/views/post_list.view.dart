@@ -12,8 +12,17 @@ class PostList extends StatelessWidget {
       appBar: AppBar(
         leading: BackButton(),
         title: Obx(() {
-          if(memoController.isLoading.value == true) {
-            return Text("Saving some images...");
+          if (memoController.status.value != "") {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(memoController.status.value),
+                Text(
+                  memoController.intervalTimer.value,
+                  style: TextStyle(fontSize: 12.0),
+                ),
+              ],
+            );
           }
           return Text("Album Detail");
         }),
